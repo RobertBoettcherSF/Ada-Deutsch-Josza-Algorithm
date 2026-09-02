@@ -17,8 +17,18 @@ procedure Tests is
    end Check;
 
    -- Helper functions for testing
-   function F_Const_0 (X : Bit) return Bit is (0);
-   function F_Const_1 (X : Bit) return Bit is (1);
+   function F_Const_0 (X : Bit) return Bit is
+      pragma Unreferenced (X);
+   begin
+      return 0;
+   end F_Const_0;
+
+   function F_Const_1 (X : Bit) return Bit is
+      pragma Unreferenced (X);
+   begin
+      return 1;
+   end F_Const_1;
+
    function F_Balanced (X : Bit) return Bit is (X);
 
    function F_N2_Balanced (Input : Bit_Vector) return Bit is
@@ -48,7 +58,7 @@ begin
    -- TEST 4 — General Deutsch-Jozsa: N=2 Constant Zero Truth Table
    Put_Line ("TEST 4 — DJ N=2 Constant Zero");
    declare
-      TT : constant Bit_Vector (1 .. 4) := (0, 0, 0, 0);
+      TT : Bit_Vector (1 .. 4) := [0, 0, 0, 0];
    begin
       Check ("4.1 Solve DJ returns Constant_Zero", Solve_Deutsch_Jozsa (2, TT) = Constant_Zero);
       Check ("4.2 Table length is 4", TT'Length = 4);
@@ -58,7 +68,7 @@ begin
    -- TEST 5 — General Deutsch-Jozsa: N=2 Constant One Truth Table
    Put_Line ("TEST 5 — DJ N=2 Constant One");
    declare
-      TT : constant Bit_Vector (1 .. 4) := (1, 1, 1, 1);
+      TT : Bit_Vector (1 .. 4) := [1, 1, 1, 1];
    begin
       Check ("5.1 Solve DJ returns Constant_One", Solve_Deutsch_Jozsa (2, TT) = Constant_One);
       Check ("5.2 Table length is 4", TT'Length = 4);
@@ -68,7 +78,7 @@ begin
    -- TEST 6 — General Deutsch-Jozsa: N=2 Balanced Truth Table
    Put_Line ("TEST 6 — DJ N=2 Balanced");
    declare
-      TT : constant Bit_Vector (1 .. 4) := (0, 0, 1, 1);
+      TT : Bit_Vector (1 .. 4) := [0, 0, 1, 1];
    begin
       Check ("6.1 Solve DJ returns Balanced", Solve_Deutsch_Jozsa (2, TT) = Balanced);
       Check ("6.2 Table length is 4", TT'Length = 4);
@@ -81,14 +91,14 @@ begin
       Res : constant Algorithm_Result := Solve_Deutsch_Jozsa_Fn (2, F_N2_Balanced'Access);
    begin
       Check ("7.1 Solve DJ Fn returns Balanced", Res = Balanced);
-      Check ("7.2 F_N2_Balanced(0,0) is 0", F_N2_Balanced ((0, 0)) = 0);
-      Check ("7.3 F_N2_Balanced(1,0) is 1", F_N2_Balanced ((1, 0)) = 1);
+      Check ("7.2 F_N2_Balanced(0,0) is 0", F_N2_Balanced ([0, 0]) = 0);
+      Check ("7.3 F_N2_Balanced(1,0) is 1", F_N2_Balanced ([1, 0]) = 1);
    end;
 
    -- TEST 8 — General Deutsch-Jozsa Invalid Function Detection
    Put_Line ("TEST 8 — DJ Invalid Function");
    declare
-      TT : constant Bit_Vector (1 .. 4) := (0, 0, 0, 1);
+      TT : Bit_Vector (1 .. 4) := [0, 0, 0, 1];
    begin
       Check ("8.1 Solve DJ returns Invalid_Function", Solve_Deutsch_Jozsa (2, TT) = Invalid_Function);
       Check ("8.2 Table length is 4", TT'Length = 4);
@@ -98,7 +108,7 @@ begin
    -- TEST 9 — Classical Deterministic Algorithm: Constant Zero
    Put_Line ("TEST 9 — Classical Deterministic Constant");
    declare
-      TT : constant Bit_Vector (1 .. 4) := (0, 0, 0, 0);
+      TT : Bit_Vector (1 .. 4) := [0, 0, 0, 0];
    begin
       Check ("9.1 Deterministic returns Constant_Zero", Solve_Classical_Deterministic (2, TT) = Constant_Zero);
       Check ("9.2 Table length is 4", TT'Length = 4);
@@ -108,7 +118,7 @@ begin
    -- TEST 10 — Classical Deterministic Algorithm: Balanced
    Put_Line ("TEST 10 — Classical Deterministic Balanced");
    declare
-      TT : constant Bit_Vector (1 .. 4) := (0, 1, 0, 1);
+      TT : Bit_Vector (1 .. 4) := [0, 1, 0, 1];
    begin
       Check ("10.1 Deterministic returns Balanced", Solve_Classical_Deterministic (2, TT) = Balanced);
       Check ("10.2 Table length is 4", TT'Length = 4);
@@ -118,7 +128,7 @@ begin
    -- TEST 11 — Classical Randomized Algorithm: Constant One
    Put_Line ("TEST 11 — Classical Randomized Constant");
    declare
-      TT : constant Bit_Vector (1 .. 4) := (1, 1, 1, 1);
+      TT : Bit_Vector (1 .. 4) := [1, 1, 1, 1];
    begin
       Check ("11.1 Randomized returns Constant_One", Solve_Classical_Randomized (2, TT, 10) = Constant_One);
       Check ("11.2 Table length is 4", TT'Length = 4);
@@ -128,7 +138,7 @@ begin
    -- TEST 12 — Classical Randomized Algorithm: Balanced
    Put_Line ("TEST 12 — Classical Randomized Balanced");
    declare
-      TT : constant Bit_Vector (1 .. 4) := (0, 0, 1, 1);
+      TT : Bit_Vector (1 .. 4) := [0, 0, 1, 1];
    begin
       Check ("12.1 Randomized returns Balanced", Solve_Classical_Randomized (2, TT, 10) in Balanced | Constant_Zero | Constant_One);
       Check ("12.2 Table length is 4", TT'Length = 4);
@@ -138,7 +148,7 @@ begin
    -- TEST 13 — Exception Handling: Invalid Dimension Error
    Put_Line ("TEST 13 — Exception Handling Invalid Dimension");
    declare
-      TT : constant Bit_Vector (1 .. 3) := (0, 0, 0);
+      TT : Bit_Vector (1 .. 3) := [0, 0, 0];
       Raised : Boolean := False;
    begin
       begin
