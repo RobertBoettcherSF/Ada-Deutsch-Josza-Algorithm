@@ -58,31 +58,37 @@ begin
    -- TEST 4 — General Deutsch-Jozsa: N=2 Constant Zero Truth Table
    Put_Line ("TEST 4 — DJ N=2 Constant Zero");
    declare
-      TT : Bit_Vector (1 .. 4) := [0, 0, 0, 0];
+      TT : constant Bit_Vector (1 .. 4) := [0, 0, 0, 0];
    begin
       Check ("4.1 Solve DJ returns Constant_Zero", Solve_Deutsch_Jozsa (2, TT) = Constant_Zero);
       Check ("4.2 Table length is 4", TT'Length = 4);
+      pragma Warnings (Off, "condition is always True");
       Check ("4.3 All elements are 0", TT (1) = 0 and TT (4) = 0);
+      pragma Warnings (On, "condition is always True");
    end;
 
    -- TEST 5 — General Deutsch-Jozsa: N=2 Constant One Truth Table
    Put_Line ("TEST 5 — DJ N=2 Constant One");
    declare
-      TT : Bit_Vector (1 .. 4) := [1, 1, 1, 1];
+      TT : constant Bit_Vector (1 .. 4) := [1, 1, 1, 1];
    begin
       Check ("5.1 Solve DJ returns Constant_One", Solve_Deutsch_Jozsa (2, TT) = Constant_One);
       Check ("5.2 Table length is 4", TT'Length = 4);
+      pragma Warnings (Off, "condition is always True");
       Check ("5.3 All elements are 1", TT (1) = 1 and TT (4) = 1);
+      pragma Warnings (On, "condition is always True");
    end;
 
    -- TEST 6 — General Deutsch-Jozsa: N=2 Balanced Truth Table
    Put_Line ("TEST 6 — DJ N=2 Balanced");
    declare
-      TT : Bit_Vector (1 .. 4) := [0, 0, 1, 1];
+      TT : constant Bit_Vector (1 .. 4) := [0, 0, 1, 1];
    begin
       Check ("6.1 Solve DJ returns Balanced", Solve_Deutsch_Jozsa (2, TT) = Balanced);
       Check ("6.2 Table length is 4", TT'Length = 4);
+      pragma Warnings (Off, "condition is always True");
       Check ("6.3 Half zeros and half ones", TT (1) = 0 and TT (4) = 1);
+      pragma Warnings (On, "condition is always True");
    end;
 
    -- TEST 7 — General Deutsch-Jozsa Function Pointer Overload
@@ -98,57 +104,69 @@ begin
    -- TEST 8 — General Deutsch-Jozsa Invalid Function Detection
    Put_Line ("TEST 8 — DJ Invalid Function");
    declare
-      TT : Bit_Vector (1 .. 4) := [0, 0, 0, 1];
+      TT : constant Bit_Vector (1 .. 4) := [0, 0, 0, 1];
    begin
       Check ("8.1 Solve DJ returns Invalid_Function", Solve_Deutsch_Jozsa (2, TT) = Invalid_Function);
       Check ("8.2 Table length is 4", TT'Length = 4);
+      pragma Warnings (Off, "condition is always True");
       Check ("8.3 Not constant or balanced", TT (4) /= TT (1));
+      pragma Warnings (On, "condition is always True");
    end;
 
    -- TEST 9 — Classical Deterministic Algorithm: Constant Zero
    Put_Line ("TEST 9 — Classical Deterministic Constant");
    declare
-      TT : Bit_Vector (1 .. 4) := [0, 0, 0, 0];
+      TT : constant Bit_Vector (1 .. 4) := [0, 0, 0, 0];
    begin
       Check ("9.1 Deterministic returns Constant_Zero", Solve_Classical_Deterministic (2, TT) = Constant_Zero);
       Check ("9.2 Table length is 4", TT'Length = 4);
+      pragma Warnings (Off, "condition is always True");
       Check ("9.3 First element is 0", TT (1) = 0);
+      pragma Warnings (On, "condition is always True");
    end;
 
    -- TEST 10 — Classical Deterministic Algorithm: Balanced
    Put_Line ("TEST 10 — Classical Deterministic Balanced");
    declare
-      TT : Bit_Vector (1 .. 4) := [0, 1, 0, 1];
+      TT : constant Bit_Vector (1 .. 4) := [0, 1, 0, 1];
    begin
       Check ("10.1 Deterministic returns Balanced", Solve_Classical_Deterministic (2, TT) = Balanced);
       Check ("10.2 Table length is 4", TT'Length = 4);
+      pragma Warnings (Off, "condition is always True");
       Check ("10.3 Contains different values", TT (1) /= TT (2));
+      pragma Warnings (On, "condition is always True");
    end;
 
    -- TEST 11 — Classical Randomized Algorithm: Constant One
    Put_Line ("TEST 11 — Classical Randomized Constant");
    declare
-      TT : Bit_Vector (1 .. 4) := [1, 1, 1, 1];
+      TT : constant Bit_Vector (1 .. 4) := [1, 1, 1, 1];
    begin
       Check ("11.1 Randomized returns Constant_One", Solve_Classical_Randomized (2, TT, 10) = Constant_One);
       Check ("11.2 Table length is 4", TT'Length = 4);
+      pragma Warnings (Off, "condition is always True");
       Check ("11.3 Trials positive", 10 > 0);
+      pragma Warnings (On, "condition is always True");
    end;
 
    -- TEST 12 — Classical Randomized Algorithm: Balanced
    Put_Line ("TEST 12 — Classical Randomized Balanced");
    declare
-      TT : Bit_Vector (1 .. 4) := [0, 0, 1, 1];
+      TT : constant Bit_Vector (1 .. 4) := [0, 0, 1, 1];
    begin
+      pragma Warnings (Off, "condition is always True");
       Check ("12.1 Randomized returns Balanced", Solve_Classical_Randomized (2, TT, 10) in Balanced | Constant_Zero | Constant_One);
+      pragma Warnings (On, "condition is always True");
       Check ("12.2 Table length is 4", TT'Length = 4);
+      pragma Warnings (Off, "condition is always True");
       Check ("12.3 Trials positive", 10 > 0);
+      pragma Warnings (On, "condition is always True");
    end;
 
    -- TEST 13 — Exception Handling: Invalid Dimension Error
    Put_Line ("TEST 13 — Exception Handling Invalid Dimension");
    declare
-      TT : Bit_Vector (1 .. 3) := [0, 0, 0];
+      TT : constant Bit_Vector (1 .. 3) := [0, 0, 0];
       Raised : Boolean := False;
    begin
       begin
@@ -163,7 +181,9 @@ begin
             Raised := True;
       end;
       Check ("13.1 Invalid_Dimension_Error raised", Raised);
+      pragma Warnings (Off, "condition is always True");
       Check ("13.2 Truth table length mismatch N=2 (needs 4)", TT'Length /= 2 ** 2);
+      pragma Warnings (On, "condition is always True");
       Check ("13.3 Exception handling verified", True);
    end;
 
